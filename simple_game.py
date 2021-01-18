@@ -1,5 +1,6 @@
 import random 
 import dataclasses
+import collections
 
 cards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 deck = []
@@ -9,9 +10,10 @@ class Player:
     def __init__(self, name, hand):
         self.name = name
         self.hand = hand
+        self.books = 0
 
     def __str__(self):
-        return f'Name: {self.name} Hand: {self.hand}'
+        return f'Name: {self.name} Hand: {self.hand} Books: {self.books}'
 
 
 
@@ -54,14 +56,17 @@ def player1_turn():
 
     if match_found:
         print('You found a match. You get to go again!!')
-        check_for_books()
+        check_for_books(player_1)
         player1_turn()
     else:
         print('GO FISH!!')
+        go_fish(player_1)
+        check_for_books(player_1)
+        print(player_1)
+        print(computer)
+        print(f'Name: {computer.name} Books: {computer.books}')
         computer_turn()
 
-    print(player_1)
-    print(computer)
 
 def computer_turn():
     print('It\'s the computer\'s turn now')
@@ -71,14 +76,18 @@ def computer_turn():
 
     if match_found:
         print('You have the card the computer requested.')
-        check_for_books()
+        check_for_books(computer)
         computer_turn()
     else:
         print('You don\'t have the card the computer requested. The computer is going fishing!')
+        go_fish(computer)
+        check_for_books(computer)
+        print(player_1)
+        print(computer)
+        print(f'Name: {computer.name} Books: {computer.books}')
         player1_turn()
 
-    print(player_1)
-    print(computer)
+    
 
 def request_card(card, requester, donator):
     match_found = False
@@ -89,10 +98,27 @@ def request_card(card, requester, donator):
             match_found = True
     return match_found
 
-    
 
-def check_for_books():
-    print('This method will check to see if a user has any new books.')
+def go_fish(player):
+     if len(deck) > 0:
+        player.hand.append(deck[0])
+        deck.remove(deck[0])
+     else:
+         print('The game is over. There are no cards remaining in the deck.')
+
+def check_for_books(player):
+    print('This method will check to see if a user has any new books.')  
+    counter = collections.Counter(player.hand)
+
+    for key in counter:
+        if counter[key] == 4:
+            player.books += 1
+            for c in player.hand:
+                if c == key:
+                    player.hand.remove(key)
+            print(f'{player.name} made a book of {key}\'s')
+
+
 
 
 deck = create_deck()
