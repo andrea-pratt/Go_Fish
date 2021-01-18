@@ -40,9 +40,7 @@ def deal_hand(deck):
     return hand
 
 
-deck = create_deck()
-deal_hand(deck)
-player_1, computer = initialize_players()
+
 
 
  #
@@ -50,7 +48,27 @@ player_1, computer = initialize_players()
  # 
 
 def player1_turn():
-    print(f'Your turn. Here is your hand: {player_1.hand}. Choose a card value to' +
-           ' request from your opponent. It must be a card value in your hand')
+    print(f'\n\nYour turn. Here is your hand: {player_1.hand}. Choose a card value to' +
+           ' request from your opponent. It must be a value in your hand\n')
+    request_card(str(input('Enter your choice here and press ENTER: ')))
+
+def request_card(card):
+    match_found = False
+    for c in computer.hand:
+        if c == card:
+            player_1.hand.append(c)
+            computer.hand.remove(c)
+            match_found = True
+    if not match_found:
+        print('GO FISH!!')
+
+    print(player_1)
+    print(computer)
+
+
+
+deck = create_deck()
+deal_hand(deck)
+player_1, computer = initialize_players()
 
 player1_turn()
