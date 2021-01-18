@@ -28,6 +28,7 @@ def initialize_players():
     computer = Player('Computer', deal_hand(deck))
     print(player_1)
     print(computer)
+    return player_1, computer
     
 
 # This function creates a hand with 7 cards from the top of the deck
@@ -41,11 +42,15 @@ def deal_hand(deck):
 
 deck = create_deck()
 deal_hand(deck)
-initialize_players()
+player_1, computer = initialize_players()
+
 
  #
  # MAIN GAME PLAY FUNCTIONS  
  # 
 
+def player1_turn():
+    print(f'Your turn. Here is your hand: {player_1.hand}. Choose a card value to' +
+           ' request from your opponent. It must be a card value in your hand')
 
-
+player1_turn()
