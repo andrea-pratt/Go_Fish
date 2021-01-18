@@ -22,6 +22,7 @@ def create_deck():
     return deck
 
 
+# This function creates objects for each of the players
 def initialize_players():
     player_1 = Player('Player_1', deal_hand(deck))
     computer = Player('Computer', deal_hand(deck))
@@ -29,14 +30,22 @@ def initialize_players():
     print(computer)
     
 
-
+# This function creates a hand with 7 cards from the top of the deck
 def deal_hand(deck):
     hand = []
     for _ in range(7):
         hand.append(deck[0])
         deck.remove(deck[0])
     return hand
-    
+
+
 deck = create_deck()
 deal_hand(deck)
 initialize_players()
+
+ #
+ # MAIN GAME PLAY FUNCTIONS  
+ # 
+
+
+
