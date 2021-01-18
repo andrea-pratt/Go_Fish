@@ -50,21 +50,49 @@ def deal_hand(deck):
 def player1_turn():
     print(f'\n\nYour turn. Here is your hand: {player_1.hand}. Choose a card value to' +
            ' request from your opponent. It must be a value in your hand\n')
-    request_card(str(input('Enter your choice here and press ENTER: ')))
+    match_found = request_card(str(input('Enter your choice here and press ENTER: ')), player_1, computer)
 
-def request_card(card):
-    match_found = False
-    for c in computer.hand:
-        if c == card:
-            player_1.hand.append(c)
-            computer.hand.remove(c)
-            match_found = True
-    if not match_found:
+    if match_found:
+        print('You found a match. You get to go again!!')
+        check_for_books()
+        player1_turn()
+    else:
         print('GO FISH!!')
+        computer_turn()
 
     print(player_1)
     print(computer)
 
+def computer_turn():
+    print('It\'s the computer\'s turn now')
+    index_requested = random.randint(0, len(computer.hand)-1)
+    match_found = request_card(computer.hand[index_requested], computer, player_1)
+    print(f'the index generated is {index_requested}, and the card is {computer.hand[index_requested]}')
+
+    if match_found:
+        print('You have the card the computer requested.')
+        check_for_books()
+        computer_turn()
+    else:
+        print('You don\'t have the card the computer requested. The computer is going fishing!')
+        player1_turn()
+
+    print(player_1)
+    print(computer)
+
+def request_card(card, requester, donator):
+    match_found = False
+    for c in donator.hand:
+        if c == card:
+            requester.hand.append(c)
+            donator.hand.remove(c)
+            match_found = True
+    return match_found
+
+    
+
+def check_for_books():
+    print('This method will check to see if a user has any new books.')
 
 
 deck = create_deck()
