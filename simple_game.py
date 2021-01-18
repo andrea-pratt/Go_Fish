@@ -51,7 +51,12 @@ def deal_hand(deck):
 def player1_turn():
     print(f'\n\nYour turn. Here is your hand: {player_1.hand}. Choose a card value to' +
            ' request from your opponent. It must be a value in your hand\n')
-    match_found = request_card(str(input('Enter your choice here and press ENTER: ')), player_1, computer)
+
+    if len(computer.hand) > 0:
+        match_found = request_card(str(input('Enter your choice here and press ENETER: ')), player_1, computer)
+    else:
+        if not go_fish(player_1):
+            determine_results()
 
     if match_found:
         print('You found a match. You get to go again!!')
@@ -64,16 +69,17 @@ def player1_turn():
         check_for_books(player_1)
         print(player_1)
         print(computer)
-        print(f'Name: {computer.name} Books: {computer.books}')
         computer_turn()
 
 
 def computer_turn():
     print('It\'s the computer\'s turn now')
     index_requested = random.randint(0, len(computer.hand)-1)
-    match_found = request_card(computer.hand[index_requested], computer, player_1)
-    print(f'the index generated is {index_requested}, and the card is {computer.hand[index_requested]}')
-
+    if len(player_1.hand) > 0:
+        match_found = request_card(computer.hand[index_requested], computer, player_1)
+    else:
+        if not go_fish(computer):
+            determine_results()
     if match_found:
         print('You have the card the computer requested.')
         check_for_books(computer)
@@ -84,17 +90,17 @@ def computer_turn():
         check_for_books(computer)
         print(player_1)
         print(computer)
-        print(f'Name: {computer.name} Books: {computer.books}')
         player1_turn()
 
     
 
 def request_card(card, requester, donator):
     match_found = False
-    while card in donator.hand:
-        donator.hand.remove(card)
-        requester.hand.append(card)
-        match_found = True
+    if len(donator.hand) > 0:
+        while card in donator.hand:
+            donator.hand.remove(card)
+            requester.hand.append(card)
+            match_found = True
     return match_found
 
 
@@ -103,9 +109,11 @@ def go_fish(player):
         print(f'The card that was chosen from the deck is {deck[0]}')
         player.hand.append(deck[0])
         deck.remove(deck[0])
+        return True
      else:
-         determine_results()
-         sys.exit()
+         print('The deck is empty. Once you run out of cards in your hand, the game will be over.')
+         return False
+
 
 def check_for_books(player):
     print('This method will check to see if a user has any new books.')  
@@ -130,6 +138,7 @@ def determine_results():
     else:
         print('YOU WON!!!\n')
     print(f'Your books: {player_1.books}\nComputer books: {computer.books}')
+    sys.exit()
     
 
 deck = create_deck()
