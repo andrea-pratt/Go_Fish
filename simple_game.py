@@ -1,9 +1,9 @@
 import random
 import collections
 import sys
+import time
 
 cards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-deck = []
 
 
 # There will be two players in this game. The user, and the computer
@@ -15,7 +15,7 @@ class Player:
         self.books = 0
 
     def __str__(self):
-        return f'Name: {self.name} Hand: {self.hand} Books: {self.books}'
+        return f'Name: {self.name}\t\tBooks: {self.books}'
 
 
 # This function creates a shuffled deck with 52 cards
@@ -27,11 +27,9 @@ def create_deck():
 
 # This function creates objects for each of the players
 def initialize_players():
-    player_1 = Player('Player_1', deal_hand(deck))
+    human = Player('Human', deal_hand(deck))
     computer = Player('Computer', deal_hand(deck))
-    print(player_1)
-    print(computer)
-    return player_1, computer
+    return human, computer
 
 
 # This function creates a hand with 7 cards from the top of the deck
@@ -47,63 +45,75 @@ def deal_hand(deck):
 # MAIN GAME PLAY FUNCTIONS
 #
 
-def player1_turn():
-    if len(player_1.hand) > 0:
-        print(f'\n\nYour turn. Here is your hand: {player_1.hand}. Choose a card value to' +
+def human_turn():
+    print('\n\n------------TURN: Human------------\n')
+    print(human)
+    print(f'{computer}\n')
+    if len(human.hand) > 0:
+        print(f'Your turn. Here is your hand: {human.hand}. Choose a card value to' +
             ' request from your opponent. It must be a value in your hand\n')
 
-        match_found = request_card(str(input('Enter your choice here and press ENTER: ')), player_1, computer)
+        match_found = request_card(get_user_input(), human, computer)
 
         if match_found:
             print('You found a match. You get to go again!!')
-            check_for_books(player_1)
-            print(computer)
-            player1_turn()
+            check_for_books(human)
+            pause_between_turns()
+            human_turn()
         else:
-            print('GO FISH!!')
-            go_fish(player_1)
-            check_for_books(player_1)
-            print(player_1)
-            print(computer)
+            go_fish(human)
+            print(f'\nGO FISH! The card that was chosen from the deck is {human.hand[-1]}')
+            check_for_books(human)
+            pause_between_turns()
             computer_turn()
-    elif out_of_cards(player_1, computer):
+    elif out_of_cards(human, computer):
+        pause_between_turns()
         computer_turn()
 
 
 def computer_turn():
+    print('\n------------TURN: Computer------------\n')
+    print(human)
+    print(f'{computer}\n')
     if len(computer.hand) > 0:
         print('It\'s the computer\'s turn now')
         index_requested = random.randint(0, len(computer.hand) - 1)
-        match_found = request_card(computer.hand[index_requested], computer, player_1)
+        print(f'The computer requested a {computer.hand[index_requested]}')
+        match_found = request_card(computer.hand[index_requested], computer, human)
 
         if match_found:
-            print('You have the card the computer requested.')
+            print('You HAVE the card the computer requested.')
             check_for_books(computer)
+            time.sleep(3)
             computer_turn()
         else:
-            print('You don\'t have the card the computer requested. The computer is going fishing!')
+            print('You DO NOT have the card the computer requested. The computer is going fishing!')
             go_fish(computer)
             check_for_books(computer)
-            print(player_1)
-            print(computer)
-            player1_turn()
-    elif out_of_cards(computer, player_1):
-        player1_turn()
-
+            pause_between_turns()
+            human_turn()
+    elif out_of_cards(computer, human):
+        pause_between_turns()
+        human_turn()
+    
 
 
 def out_of_cards(player, opponent):
     if go_fish(player):
-        print(computer)
         if request_card(player.hand[0], player, opponent):
             print(f'{opponent.name} has the card that {player.name} requested!')
         else:
             print(f'{opponent} does not have the card that {player.name} requested. It\'s {opponent.name}\'s turn now.')
-        print(player_1)
+        print(human)
         return True        
     else:
+        check_for_books(player)
+        check_for_books(opponent)
         determine_results()
 
+
+def pause_between_turns():
+    time.sleep(1)
 
 
 def request_card(card, requester, donator):
@@ -118,7 +128,6 @@ def request_card(card, requester, donator):
 
 def go_fish(player):
     if len(deck) > 0:
-        print(f'The card that was chosen from the deck is {deck[0]}')
         player.hand.append(deck[0])
         deck.remove(deck[0])
         return True
@@ -127,8 +136,14 @@ def go_fish(player):
         return False
 
 
+def get_user_input():
+    user_input = str(input('Please enter your selection here, and press ENTER: '))
+    while user_input.upper() not in human.hand:
+        user_input = str(input('\nYour selection must be a card value in your hand. Please enter your selection here, and press ENTER: '))
+    return user_input
+
+
 def check_for_books(player):
-    print('This method will check to see if a user has any new books.')
     counter = collections.Counter(player.hand)
 
     for key in counter:
@@ -137,24 +152,23 @@ def check_for_books(player):
             while key in player.hand:
                 player.hand.remove(key)
             print(f'{player.name} made a book of {key}\'s')
-            print(player_1)
+            print(human)
             print(computer)
+            
 
 
 def determine_results():
     print('The game is over. There are no more cards in the deck.\n')
-    if computer.books > player_1.books:
+    if computer.books > human.books:
         print('The COMPUTER won...\n')
-    elif computer.books == player_1.books:
+    elif computer.books == human.books:
         print('It was a tie...\n')
     else:
         print('YOU WON!!!\n')
-    print(f'Your books: {player_1.books}\nComputer books: {computer.books}')
+    print(f'Your books: {human.books}\nComputer books: {computer.books}')
     sys.exit()
 
 
 deck = create_deck()
-deal_hand(deck)
-player_1, computer = initialize_players()
-
-player1_turn()
+human, computer = initialize_players()
+human_turn()
