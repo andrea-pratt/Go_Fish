@@ -95,7 +95,10 @@ def computer_turn():
 def out_of_cards(player, opponent):
     if go_fish(player):
         print(computer)
-        request_card(player.hand[0], player, opponent)
+        if request_card(player.hand[0], player, opponent):
+            print(f'{opponent.name} has the card that {player.name} requested!')
+        else:
+            print(f'{opponent} does not have the card that {player.name} requested. It\'s {opponent.name}\'s turn now.')
         print(player_1)
         return True        
     else:
