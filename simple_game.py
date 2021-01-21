@@ -100,7 +100,7 @@ def computer_turn():
         print('It\'s the computer\'s turn now')
         # Requests a card from the user based on a randomly generated index of it's hand
         index_requested = random.randint(0, len(computer.hand) - 1)
-        print(f'The computer requested a {computer.hand[index_requested]}')
+        print(f'The computer requested a(n) {computer.hand[index_requested]}')
         match_found = request_card(computer.hand[index_requested], computer, human)
 
         if match_found:
