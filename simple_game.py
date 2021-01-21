@@ -4,6 +4,7 @@ import sys
 import time
 
 cards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+deck = []
 
 
 # There will be two players in this game. The user, and the computer
@@ -47,8 +48,6 @@ def deal_hand(deck):
 
 # Calls game setup functions and starts the application
 def Main():
-    deck = create_deck()
-    human, computer = initialize_players()
     human_turn()
 
 # This block of code runs whenever it's the user's turn in the game
@@ -116,6 +115,7 @@ def computer_turn():
             pause_between_turns()
             human_turn()
     elif out_of_cards(computer, human):
+        print('You ran out of cards in your hand...')
         pause_between_turns()
         human_turn()
     
@@ -129,6 +129,7 @@ def out_of_cards(player, opponent):
             print(f'{opponent.name} has the card that {player.name} requested!')
         else:
             print(f'{opponent} does not have the card that {player.name} requested. It\'s {opponent.name}\'s turn now.')
+        check_for_books(player)
         return True     
     # If the deck is empty, check for books for both players and determine the game results   
     else:
@@ -201,5 +202,7 @@ def determine_results():
     sys.exit()
 
 
-# Call main function
+# Call setup functions and begin game play
+deck = create_deck()
+human, computer = initialize_players()
 Main()
