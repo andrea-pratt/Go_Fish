@@ -48,8 +48,12 @@ def deal_hand(deck):
 
 # Calls game setup functions and starts the application
 def Main():
-    print('\n\n\nREADY TO PLAY THE GAME OF GO FISH? LET\'S GET STARTED!')
-    human_turn()
+    # Will catch general exceptions
+    try:
+        print('\n\n\nREADY TO PLAY THE GAME OF GO FISH? LET\'S GET STARTED!')
+        human_turn()
+    except:
+        print('I\'m sorry. Something went wrong. Please exit the game and start again')
 
 # This block of code runs whenever it's the user's turn in the game
 # It checks to see if the user has cards in there hand, and if so,
