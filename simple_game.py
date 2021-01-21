@@ -48,6 +48,7 @@ def deal_hand(deck):
 
 # Calls game setup functions and starts the application
 def Main():
+    print('\n\n\nREADY TO PLAY THE GAME OF GO FISH? LET\'S GET STARTED!')
     human_turn()
 
 # This block of code runs whenever it's the user's turn in the game
@@ -59,7 +60,7 @@ def Main():
 # will draw a card from the deck
 def human_turn():
     # Print current turn and game stats
-    print('\n\n------------TURN: Human------------\n') 
+    print('\n------------TURN: Human------------\n') 
     print(human)                    
     print(f'{computer}\n')
     # Make sure user has cards in their hand
