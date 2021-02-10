@@ -4,6 +4,7 @@ SOURCES:
 
 2. Go Fish game rules copied from "https://bicyclecards.com/how-to-play/go-fish/"
 
+GO FISH GAME RULES:
 
 THE PACK
 The standard 52-card pack is used. Some cards will be dealt and the rest will form the stock pile.
