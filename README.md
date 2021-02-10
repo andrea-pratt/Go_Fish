@@ -1,13 +1,12 @@
 # Capstone_Project1
+SOURCES:
+1. Go Fish was one of the labs for Java at MCTC that I took last Spring. I didn't specifically reference this program, and I don't have a link for it. Any resemblance is from my experience working on that lab.
 
-Go Fish game rules copied from "https://bicyclecards.com/how-to-play/go-fish/"
+2. Go Fish game rules copied from "https://bicyclecards.com/how-to-play/go-fish/"
+
 
 THE PACK
 The standard 52-card pack is used. Some cards will be dealt and the rest will form the stock pile.
-
-Sources:
-Go Fish was one of the labs for Java at MCTC that I took last Spring. I didn't specifically reference this program, and I don't have a link for it. Any resemblance is from my experience working on that lab.
-
 
 OBJECT OF THE GAME
 The goal is to win the most "books" of cards. A book is any four of a kind, such as four kings, four aces, and so on.
